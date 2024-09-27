@@ -1,0 +1,126 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 388E3C  8BC34A  DDEEDF  F2F9F18*/
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+html{
+  background-color: #388E3C;
+}
+
+.mainContent{
+  margin-left: 20px;
+  height: 90vh;
+}
+.App{
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+
+/*sidebar*/
+.sideBar{
+  background-color: #DDEEDF;
+  height: 100%;
+  padding: 30px 0 0 10px;
+}
+
+.sideBar nav{
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 600px;
+}
+
+
+.primero{
+  font-size: 20px;
+  display: inline-block;
+  padding-left: 30px; /* Espacio para la imagen */
+  background-image: url('./assets/casa-silueta-negra-sin-puerta.png');
+  background-size: 20px 20px; /* Ajusta el tamaño de la imagen */
+  background-repeat: no-repeat;
+  background-position: left center; /* Posición de la imagen */
+}
+.inputContainer{
+  margin-bottom: 20px;
+}
+.inputContainer input{
+  padding-left: 30px; /* Espacio para la imagen */
+  width: 150px;  /* Ajusta el ancho según necesites */
+  height: 30px;  /* Ajusta la altura según necesites */
+}
+.inputContainer img{
+  height: 30px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.containerContacts{
+  overflow-y: scroll;
+
+}
+.contactItemList{
+  list-style: none;
+}
+.contactItemList a{
+  text-decoration: none;
+  color: black;
+}
+
+/*sidebar*/
+
+
+/*pagina inicio mensajes*/
+
+h1{
+  color:#DDEEDF ;
+}
+.messageCard{
+  width: 200px;
+  height: 200px;
+  background-color: #DDEEDF;
+  align-items: center;
+  border-radius: 2px;
+}
+.containerMessages{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+/*pagina inicio mensajes*/
+
+/*pagina contactos*/
+.contactContainer{
+  display: flex;
+  flex-direction: column;
+  margin: 20px 50px 0 50px;
+}
+.contactHeader{
+  display: flex;
+  gap: 30px;
+  max-height: 150px;
+}
+.contactHeader img{
+  height: 100px;
+  width: auto;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.messagesContactContainer{
+  gap: 30px;
+}
+
+/*tipos de mensajes*/

@@ -1,43 +1,45 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 const ItemMessagesContact = ({message}) => {
+      const condition = message.id.fromMe ? `message${message.type[0].toUpperCase()}${message.type.slice(1, message.length)}FromMe` : `message${message.type[0].toUpperCase()}${message.type.slice(1, message.length)}FromOthers`
       switch(message.type){
         case 'chat':
-          return(
-            <p>{message.body}</p>
-          )
+          return (<p className={condition}>{message.body}</p>)
+          
         case 'image':
           return(
-            <img className='imageMessage'src={`${message.pathToMedia}`}/>
+            <>
+              <img src={`${message.pathToMedia}`} className={condition}/>
+            </>
           )
+            
         case 'video':
-          return(
-            <video className='videoMessage' controls src={`${message.pathToMedia}`}/>
-          )
+          if(message.hasMedia) return(<video className={condition} controls src={`${message.pathToMedia}`}/>)
+          else return <p>video para ver una vez</p>
         case 'audio':
           return(
-            <audio className='audioMessage' controls src={`${message.pathToMedia}`}/>
+            <audio className={condition} controls src={`${message.pathToMedia}`}/>
           )
         case 'ptt':
           return(
-            <audio className='audioMessage' controls src={`${message.pathToMedia}`}/>
+            <audio className={condition} controls src={`${message.pathToMedia}`}/>
           )
         case 'document':
           return(
-            <Link to={'yourmomo'}>qsy un archivito</Link>
+            <Link to={'yourmomo'} className={condition}>qsy un archivito</Link>
           )
         case 'sticker':
           return(
-            <img  className='stickerMessage'src={`${message.pathToMedia}`}/>
+            <img  className={condition} src={`${message.pathToMedia}`}/>
           )
         case 'location':
           return(
-            <div>todavia no (locacion)</div>
+            <div className={condition}>todavia no (locacion)</div>
           )
         case 'contact':
-          return(<p>recibi un contacto</p>)
+          return(<p className={condition}>recibi un contacto</p>)
         case 'default':
-          return <p>mensaje no soportado</p>
+          return <p className={condition}>mensaje no soportado</p>
       }
 }
 

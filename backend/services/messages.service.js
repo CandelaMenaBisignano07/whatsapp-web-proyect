@@ -12,7 +12,7 @@ const client = new Client({
     puppeteer: { headless: false, timeout:60000 },
     debug: true,
     authStrategy: new LocalAuth({
-        dataPath: './backend/authFolder',
+        dataPath: './authFolder',
         clientId: 'client-one',
     })
 });
@@ -80,9 +80,8 @@ const getOneContactService = async(id)=>{  ////esto iria en users cuando tenga l
     const contact = await client.getChatById(id)
     const contactNew = {isGroup: contact.isGroup, id: contact.id, name:contact.name}
     const messages = await contact.fetchMessages({limit:5})
-    for(const message of messages){ //recorre los msjs obtenidos
+    for(let message of messages){ //recorre los msjs obtenidos
         if(message.hasMedia){ //si el msj tiene media
-            if(message.type === 'video') console.log(message)
             message.pathToMedia = await mediaCharge(message)
         }
     }

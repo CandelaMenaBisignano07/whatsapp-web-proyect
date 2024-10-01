@@ -118,9 +118,51 @@ h1{
   object-fit: cover;
   border-radius: 50%;
 }
-
+.messagesContactContainerWrapper{
+  display: flex;
+  justify-content: center;
+}
 .messagesContactContainer{
-  gap: 30px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 600px; 
+  height: 500px;
+  overflow-y: scroll;
+  padding-right: 100px;
+  border-radius: 3px;
 }
 
 /*tipos de mensajes*/
+
+
+[class *= "FromMe"]{
+    align-self: flex-end;
+}
+[class *= "FromOthers"]{
+    align-self: flex-start;
+}
+[class *= "Chat"]{ 
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  max-width: 80%; /* Limita el ancho máximo si el texto es muy largo */
+  word-wrap: break-word; /* Rompe las palabras largas */
+}
+[class *= "Image"]{ 
+  height: 200px;
+  cursor: pointer;
+  object-fit: contain;
+  border-radius: 8px;
+}
+[class *= "Video"]{ 
+  width: 200px;
+  cursor: pointer;
+  object-fit: contain;
+  border-radius: 8px;
+}
+[class *= "Sticker"]{ 
+  height: 100px;
+  object-fit: contain;
+  border-radius: 20px;
+}

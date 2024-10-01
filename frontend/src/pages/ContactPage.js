@@ -54,18 +54,20 @@ const ContactPage = () => {
   return (
     <>
     <section className='contactContainer'>
-      <header className='contactHeader'>
-          <img src={contact.profile_picture}/>
-          <h2>{contact.name}</h2>
+        <header className='contactHeader'>
+            <img src={contact.profile_picture}/>
+            <h2>{contact.name}</h2>
         </header>
-        <section className='messagesContactContainer'>
-        {contact.messages.length > 0 ? (
-                      contact.messages.map((msg) => (
+        <section className='messagesContactContainerWrapper'>
+        <div className='messagesContactContainer'>
+            {contact.messages.length > 0 ? (
+                    contact.messages.map((msg) => (
                         <ItemMessagesContact message={msg} key={msg.id.id}/>
-                      ))
-                  ) : (
-                      <p>No messages available</p>
-                  )}
+                    ))
+                ) : (
+                    <p>No messages available</p>
+                )}
+        </div>
         </section>
     </section>
     </>

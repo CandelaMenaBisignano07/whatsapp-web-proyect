@@ -1,5 +1,5 @@
-import { sendPersonalMessageService, getAllMessagesService, getAllContactsService, getOneContactService, getProfilePictureService} from "../services/messages.service.js";
-
+import { sendPersonalMessageService, getAllMessagesService, deleteMessageService, uptadeMessageService} from "../services/messages.service.js";
+import { client } from "../configs/client.js";
 const sendPersonalMessages = async(req,res)=>{
     const {recipient, description,send_at} = req.body
     try {
@@ -11,9 +11,11 @@ const sendPersonalMessages = async(req,res)=>{
             recipient,
             send_at,
             created_at: new Date().toLocaleString(),
-            status: "pending"
+            status: "pending",
+            from: client.info.wid._serialized
         }
         const replied = await sendPersonalMessageService(message);
+        console.log(replied)
         return res.status(201).send({message:"the message was sended successfully", payload:replied})
     } catch (error) {
         console.log(error.message)
@@ -30,33 +32,27 @@ const getAllMessages = async(req,res)=>{
     }
 };
 
-const getAllContacts = async(req,res)=>{
+const deleteMessage = async(req,res)=>{
+    const id = req.params.id
     try {
-        const contacts = await getAllContactsService()
-        return res.send({message:"the contacts were obtained successfully", payload:contacts})
+        await deleteMessageService(id)
+        return res.send({status:'success', message:'the message was deleted successfully'})
     } catch (error) {
         return res.status(500).send({status:'error', error:error.message})
     }
 };
 
-const getOneContact = async(req,res)=>{
-    const {id} = req.params
+const uptadeMessage = async(req,res)=>{
+    const id = req.params.id;
+    const {description} = req.body;
     try {
-        const contact = await getOneContactService(id)
-        return res.send({message:"the contact was obtained successfully", payload:contact})
+        if(!description) return res.status(400).send({status:'error', error: 'a campus was forgotten'});
+        const uptadedMessage = {description};
+        const newMessage = await uptadeMessageService(id, uptadedMessage);
+        return res.send({status:'success', payload:newMessage});
     } catch (error) {
         return res.status(500).send({status:'error', error:error.message})
     }
-}
+};
 
-const getProfilePicture = async(req,res)=>{
-    const {id} = req.params
-    try {
-        const profilePicture = await getProfilePictureService(id);
-        return res.send({message:'the profile picture was obtained successfully', payload: profilePicture})
-    } catch (error) {
-        return res.status(500).send({status:'error', error:error.message})
-    }
-}
-
-export {sendPersonalMessages, getAllMessages, getAllContacts, getOneContact, getProfilePicture}
+export {sendPersonalMessages, getAllMessages, deleteMessage, uptadeMessage}

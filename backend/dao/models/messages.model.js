@@ -4,10 +4,11 @@ const messagesCollection = 'messages'
 
 const messageSchema = new mongoose.Schema({
     description : String,
-    created_at : String,
-    state : {type: String, enum: ['pending', 'fulfilled', 'rejected']},
-    recipient: String,
-    send_at: Number
+    uptaded_at: String,
+    created_at : {type:String, required:true},
+    recipient: {type:String, required:true},
+    send_at: {type:Number, required:true},
+    from: {type:String, required:true}
 })
 
 export const messagesModel = mongoose.model(messagesCollection, messageSchema);

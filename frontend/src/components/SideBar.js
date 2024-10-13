@@ -1,16 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react'
-import ItemContact from './ItemContact'
+import React, { useEffect, useState, useRef, useContext } from 'react'
+import ItemContact from './LinkToContact'
+import { Link } from 'react-router-dom'
+import ItemListContactsSideBar from '../itemLists/ItemListContactsSideBar'
+import { ClientContext } from '../context/ClientContext'
 const SideBar = () => {
-    const inputSearchRef = useRef('')
     const [contacts, setContacts] = useState([])
     const [contactsUptade, setContactsUptade] = useState([])
+    const [input, setInput] = useState('')
+    const {socket} = useContext(ClientContext)
     const URL = 'http://localhost:8080/api/'
     useEffect(()=>{
         const abortController = new AbortController()
         const signal = abortController.signal
         const fetchContacts = async()=>{
             try {
-                const contactsFetch = await fetch(`${URL}messages/contacts`, {
+                const contactsFetch = await fetch(`${URL}contacts`, {
                     method:'GET',
                     headers:{
                         'Content-Type': "application/json"
@@ -25,31 +29,45 @@ const SideBar = () => {
                 console.log(error.name, error.message)
             }
         };
-        fetchContacts()
 
+        socket.on('messageRecieved', (client_message)=>{
+            fetchContacts()
+        })
+
+        socket.on('messageSended', (client_message)=>{
+            fetchContacts()
+        })
+        fetchContacts()
         return ()=>{
-            if(contacts) abortController.abort()
+            socket.off('messageRecieved')
+            socket.off('messageSended')
+            abortController.abort()
         }
     }, [])
-    const searchContacts = (input)=>{
-        if(!input) return console.log('no se puso nada')
-        const contactsResults = contacts.filter((c)=> c.name.toLowerCase().includes(input.toLowerCase()))
-        setContactsUptade([...contactsResults])
-    };
+
+    useEffect(()=>{
+        const timer = setTimeout(()=>{
+            const contactsResults = contacts.filter((c)=>{
+                return c.name.toLowerCase().includes(input.toLowerCase())
+            })
+            setContactsUptade([...contactsResults])
+        }, 1000)
+
+        return()=>{
+            clearTimeout(timer)
+        }
+    }, [input, contacts])
+
+    const searchContacts = (query)=> setInput(query)
     return (
     <>
         <header className="sideBar">
             <nav>
-                <a className="primero" href='/'>inicio</a>
+                <Link to='/home' className='homeAnchor'>inicio</Link>
                 <div className="inputContainer">
-                    <img src="/img/Lupa.png" onClick={()=> searchContacts(inputSearchRef.current.value)}/>
-                    <input type="search" placeholder="buscar" ref={inputSearchRef}/>
+                    <input value={input} type="search" placeholder="buscar" onChange={(e)=>searchContacts(e.currentTarget.value)}/>
                 </div>
-                <div className="containerContacts">
-                    {
-                        contactsUptade.map(c=><ItemContact key={c.id.user} name={c.name} contactId={c.id._serialized}/>)
-                    }
-                </div>
+                <ItemListContactsSideBar data={contactsUptade}/>
             </nav>
         </header>
     </>

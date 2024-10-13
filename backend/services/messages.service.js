@@ -1,34 +1,10 @@
 import MessagesRepository from "../repository/messages.repository.js";
 import MessagesManager from "../dao/messagesManager.js";
-import pkg from "whatsapp-web.js";
-const {Client, LocalAuth} = pkg;
-import QRcode from 'qrcode-terminal'
-import { idGenerator, mediaCharge, __dirname } from "../utils/utils.js";
-import fs from 'fs/promises'
+import { __dirname, dateDifference} from "../utils/utils.js";
+import { client } from "../configs/client.js"
 const messagesDao = new MessagesManager()
 const manager = new MessagesRepository(messagesDao)
 
-const client = new Client({
-    puppeteer: { headless: false, timeout:60000 },
-    debug: true,
-    authStrategy: new LocalAuth({
-        dataPath: './authFolder',
-        clientId: 'client-one',
-    })
-});
-
-client.once('ready', () => {
-    console.log('Client is ready!');
-});
-
-// When the client received QR-Code
-client.on('qr', (qr) => {
-    QRcode.generate(qr, {small:true})
-});
-
-client.on('disconnected', (reason)=>{
-    console.log(reason + "jeee")
-})
 
 //  client.on('message', async(client_message)=>{
 //      if(client_message.from === "5491128632168@c.us"){
@@ -41,7 +17,6 @@ client.on('disconnected', (reason)=>{
 
 
 // Start your client
-client.initialize();
 
 const sendPersonalMessageService = async(message)=>{
     let message_sended;
@@ -53,55 +28,45 @@ const sendPersonalMessageService = async(message)=>{
             return createdMessage
         }else console.log('error desde now')
     }else{
-        setTimeout(async()=>{
-            message_sended = await client.sendMessage(message.recipient, message.description)
-            if (message_sended.id.fromMe) {
-                createdMessage = await manager.createMessageRepository(message);
-                return createdMessage
-                } else {
-                    console.log('Scheduled message was not sent.');
-                }
-        }, message.send_at*1000)
+        message_sended = await client.sendMessage(message.recipient, message.description)
+        if (message_sended.id.fromMe) {
+            createdMessage = await manager.createMessageRepository(message);
+            return createdMessage
+        } else {
+            console.log('Scheduled message was not sent.');
+        }
     }
 };
 
 const getAllMessagesService = async()=>{
     const messages = await manager.getAllRepository();
-    return messages
+    return messages;
 };
 
-const getAllContactsService = async()=>{  ////esto iria en users cuando tenga la autenticacion
-    const contacts = await client.getChats();
-    return contacts;
-};
-const getOneContactService = async(id)=>{  ////esto iria en users cuando tenga la autenticacion
-    await fs.rm(`${__dirname}../../../frontend/public/media`, {recursive:true, force:true})
-    await fs.mkdir(`${__dirname}../../../frontend/public/media`)
-    const contact = await client.getChatById(id)
-    const contactNew = {isGroup: contact.isGroup, id: contact.id, name:contact.name}
-    const messages = await contact.fetchMessages({limit:5})
-    for(let message of messages){ //recorre los msjs obtenidos
-        if(message.hasMedia){ //si el msj tiene media
-            message.pathToMedia = await mediaCharge(message)
-        }
+const uptadeMessageService=async(id, message)=>{
+    const oldMessage = await manager.getByIdRepository(id);
+    message={
+        ...message,     
+        created_at: oldMessage.created_at,
+        recipient: oldMessage.recipient,
+        send_at: oldMessage.send_at,
+        from: oldMessage.from
     }
-    return {...contactNew, messages:messages.map((msg)=>{
-        if(msg.pathToMedia) return {pathToMedia: msg.pathToMedia, id:msg.id, hasMedia:msg.hasMedia, body:msg.body, type:msg.type}
-        else return {pathToMedia: msg.pathToMedia, id:msg.id, hasMedia:msg.hasMedia, body:msg.body, type:msg.type}
-    })};
+    console.log(message)
+    const newMessage = await manager.updateRepository(id, message);
+    return newMessage;
 };
 
-const getProfilePictureService = async(id)=>{
-    const profilePicture = await client.getProfilePicUrl(id);
-    return profilePicture
+const deleteMessageService = async(id)=>{
+    const message = await client.getMessageById(id)
+    if(!message.fromMe) return  
+    await message.delete(true)
 };
 
 export{
     sendPersonalMessageService,
     getAllMessagesService,
-    getAllContactsService,
-    getProfilePictureService,
-    getOneContactService
-
+    deleteMessageService,
+    uptadeMessageService
 }
 

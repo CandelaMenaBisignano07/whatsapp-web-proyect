@@ -41,7 +41,7 @@ const sendPersonalMessageService = async(message)=>{
 const getAllMessagesService = async()=>{
     const messages = await manager.getAllRepository();
     return messages;
-};
+}; 
 
 const uptadeMessageService=async(id, message)=>{
     const oldMessage = await manager.getByIdRepository(id);

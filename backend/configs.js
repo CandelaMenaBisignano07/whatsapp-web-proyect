@@ -4,5 +4,6 @@ dotenv.config()
 
 export const configs = {
     port: process.env.PORT,
-    mongoUrl: process.env.MONGO_URL
+    mongoUrl: process.env.MONGO_URL,
+    mongoUrlTest:process.env.MONGO_URL_TEST
 }

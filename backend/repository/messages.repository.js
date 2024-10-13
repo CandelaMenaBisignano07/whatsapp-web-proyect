@@ -15,7 +15,7 @@ class MessagesRepository{
     getAllRepository = async()=>{
         const messages = await this.dao.getAll()
         return messages
-    }
+    };
 }
 
 export default MessagesRepository

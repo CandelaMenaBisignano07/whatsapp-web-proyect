@@ -12,7 +12,7 @@ class MessagesManager{
     getAll = async()=>{
         const messages = messagesModel.find({});
         return messages;
-    }
+    };
 };
 
 export default MessagesManager

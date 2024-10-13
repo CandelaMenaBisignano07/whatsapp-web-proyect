@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { sendPersonalMessages, getAllMessages, getAllContacts, getProfilePicture, getOneContact} from "../controllers/messages.controller.js"
+import { sendPersonalMessages, getAllMessages, deleteMessage, uptadeMessage} from "../controllers/messages.controller.js"
+import { handleClient } from "../middlewares/middlewares.js";
 const router = Router()
-router.get('/', getAllMessages);
-router.get('/contacts', getAllContacts);
-router.get('/contacts/:id', getOneContact);
-router.get('/:id', getProfilePicture);
-router.post('/', sendPersonalMessages);
+//faltan middlewares en las rutas
+//falta el router de contactos (osea dividir las responsabilidades)
+router.get('/',handleClient, getAllMessages);
+router.post('/',handleClient, sendPersonalMessages);
+router.put('/:id',handleClient, uptadeMessage);
+router.delete('/:id', deleteMessage);
 export default router

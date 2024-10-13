@@ -1,8 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -22,10 +26,65 @@ html{
   height: 90vh;
 }
 .App{
-  display: grid;
-  grid-template-columns: 250px 1fr;
+  height: 90vh;
 }
 
+.loader {
+  border: 4px solid rgba(0, 0, 0, .1);
+  display: flex;
+  justify-content: center;
+  border-radius: 50%;
+  border-left-color: transparent;
+  width: 36px;
+  height: 36px;
+  animation: spin89345 1s linear infinite;
+}
+.mainContent > .loaderContainer{
+  height: 70%;
+}
+.loaderContainer{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} 
+
+
+@keyframes spin89345 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*qr page*/
+.containerFlexQr{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.containerContentQr{
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+.containerContentQr h1{
+  font-size: 40px;
+}
+.containerQr{
+  display: flex;
+  justify-content: center;
+}
+
+.containerQr img{
+  height: 250px;
+  border-radius: 2px;
+}
 /*sidebar*/
 .sideBar{
   background-color: #DDEEDF;
@@ -37,18 +96,20 @@ html{
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  height: 600px;
+  height: 550px;
 }
 
 
-.primero{
+.homeAnchor{
   font-size: 20px;
   display: inline-block;
-  padding-left: 30px; /* Espacio para la imagen */
+  text-decoration: none;
+  color: black;
+  padding-left: 30px;
   background-image: url('./assets/casa-silueta-negra-sin-puerta.png');
-  background-size: 20px 20px; /* Ajusta el tamaño de la imagen */
+  background-size: 20px 20px;
   background-repeat: no-repeat;
-  background-position: left center; /* Posición de la imagen */
+  background-position: left center; 
 }
 .inputContainer{
   margin-bottom: 20px;
@@ -80,6 +141,12 @@ html{
 
 
 /*pagina inicio mensajes*/
+
+.containerGrid{
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 1fr;
+}
 
 h1{
   color:#DDEEDF ;
@@ -118,6 +185,7 @@ h1{
   object-fit: cover;
   border-radius: 50%;
 }
+
 .messagesContactContainerWrapper{
   display: flex;
   justify-content: center;
@@ -133,25 +201,25 @@ h1{
   border-radius: 3px;
 }
 
+
+
 /*tipos de mensajes*/
 
 
 [class *= "FromMe"]{
-    align-self: flex-end;
+    align-self: flex-end; /*aca*/
 }
 [class *= "FromOthers"]{
     align-self: flex-start;
 }
-[class *= "Chat"]{ 
+[class *= "Chat" ], [class *='once'], [class*= 'Revoked']{ 
   padding: 10px;
   border-radius: 8px;
   background-color: #f0f0f0;
-  max-width: 80%; /* Limita el ancho máximo si el texto es muy largo */
-  word-wrap: break-word; /* Rompe las palabras largas */
+  max-width: 80%;
 }
 [class *= "Image"]{ 
   height: 200px;
-  cursor: pointer;
   object-fit: contain;
   border-radius: 8px;
 }
@@ -166,3 +234,33 @@ h1{
   object-fit: contain;
   border-radius: 20px;
 }
+
+
+.containerMessageContact{
+  align-self: flex-end;
+}
+.messageContact{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.messageContact > button{
+  cursor: pointer;
+}
+
+.containerMessageOthers{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.profilePictureContainer >img {
+  height: 40px;
+  width: auto;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+

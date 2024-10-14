@@ -1,21 +1,17 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext} from 'react'
 import Button from '../components/Button'
 import ItemMessagesContact from '../Items/ItemMessagesContact'
 import { ClientContext } from '../context/ClientContext'
-import { fetchContact } from '../api/contactsApi'
 const ItemListContacts = ({data}) => {
-    const {URL, socket} = useContext(ClientContext);
-    const [deleteData, setDeleteData] = useState('')
+    const {URL} = useContext(ClientContext);
     const eliminateMessage = async(id)=>{
         try {
-            const fetchDeleteMessage = await fetch(`${URL}messages/${id}`,{
+            await fetch(`${URL}messages/${id}`,{
                 method:'DELETE', 
                 headers:{
                     'Content-Type': 'application/json'
                 }
             })
-            const {status} = await fetchDeleteMessage.json()
-            return setDeleteData(status)
         } catch (error) {
             console.log(error.message)
         }

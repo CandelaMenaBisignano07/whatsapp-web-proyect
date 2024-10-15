@@ -216,7 +216,6 @@ h1{
   padding: 10px;
   border-radius: 8px;
   background-color: #f0f0f0;
-  max-width: 80%;
 }
 [class *= "Image"]{ 
   height: 200px;

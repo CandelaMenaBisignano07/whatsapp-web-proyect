@@ -35,7 +35,9 @@ const getAllMessages = async(req,res)=>{
 const deleteMessage = async(req,res)=>{
     const id = req.params.id
     try {
-        await deleteMessageService(id)
+        const message = await deleteMessageService(id)
+
+        if(message) return res.status(403).send({status:'error', error: 'the message its not from the actual user and it cant be eliminated'})
         return res.send({status:'success', message:'the message was deleted successfully'})
     } catch (error) {
         return res.status(500).send({status:'error', error:error.message})

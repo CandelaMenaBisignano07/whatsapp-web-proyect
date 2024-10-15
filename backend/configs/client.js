@@ -1,5 +1,5 @@
 import { socketServer } from "../app.js";
-import { __dirname, qrCharge, idGenerator } from "../utils/utils.js";
+import { __dirname, qrCharge} from "../utils/utils.js";
 import pkg from 'whatsapp-web.js'
 const { Client, LocalAuth} = pkg;
 
@@ -41,7 +41,6 @@ client.on('message_create', (client_message)=>{
 })
 
 client.on('message_revoke_everyone', (afterMessage, revokedMessage)=>{
-    console.log('aca en el evento backend')
     socketServer.emit('revokedMessage', revokedMessage)
 })
 //cuando el cliente active el modo "chatbot" se habilitara este evento

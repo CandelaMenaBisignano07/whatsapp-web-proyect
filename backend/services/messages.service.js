@@ -1,6 +1,6 @@
 import MessagesRepository from "../repository/messages.repository.js";
 import MessagesManager from "../dao/messagesManager.js";
-import { __dirname, dateDifference} from "../utils/utils.js";
+import { __dirname} from "../utils/utils.js";
 import { client } from "../configs/client.js"
 const messagesDao = new MessagesManager()
 const manager = new MessagesRepository(messagesDao)
@@ -52,14 +52,13 @@ const uptadeMessageService=async(id, message)=>{
         send_at: oldMessage.send_at,
         from: oldMessage.from
     }
-    console.log(message)
     const newMessage = await manager.updateRepository(id, message);
     return newMessage;
 };
 
 const deleteMessageService = async(id)=>{
     const message = await client.getMessageById(id)
-    if(!message.fromMe) return  
+    if(!message.fromMe) return message  
     await message.delete(true)
 };
 

@@ -28,7 +28,6 @@ client.on('qr', async(qr) => {
 
 client.on('disconnected', (reason)=>{
     console.log(reason + "jeee")
-    localStorage.removeItem('client')
     client.emit('loggedOut')
 })
 

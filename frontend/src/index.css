@@ -3,12 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 body {
-  margin: 0;
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* 388E3C  8BC34A  DDEEDF  F2F9F18*/
@@ -18,10 +16,28 @@ code {
 }
 
 html{
-  background-color: #388E3C;
+  background-color: whitesmoke;
+}
+
+/*estilos generales*/
+
+button{
+  padding: 8px 30px 8px 30px;
+  border-radius: 15px;
+  background-color: #5e41de33;
+  border-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+  color: #5D41DE;
+  font-weight: bold;
+  &:hover{
+    background-color: #5e41de4d;
+    cursor: pointer;
+  }
+
 }
 
 .mainContent{
+  padding: 20px 0 20px 0;
   margin-left: 20px;
   height: 90vh;
 }
@@ -87,9 +103,10 @@ html{
 }
 /*sidebar*/
 .sideBar{
-  background-color: #DDEEDF;
-  height: 100%;
+  background-color: white;
+  height: 100vh;
   padding: 30px 0 0 10px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.1)
 }
 
 .sideBar nav{
@@ -98,6 +115,7 @@ html{
   overflow: hidden;
   height: 550px;
 }
+
 
 
 .homeAnchor{
@@ -115,9 +133,10 @@ html{
   margin-bottom: 20px;
 }
 .inputContainer input{
-  padding-left: 30px; /* Espacio para la imagen */
-  width: 150px;  /* Ajusta el ancho según necesites */
-  height: 30px;  /* Ajusta la altura según necesites */
+  margin-top: 10px;
+  padding-left: 10px; 
+  width: 90%;  
+  height: 35px; 
 }
 .inputContainer img{
   height: 30px;
@@ -130,11 +149,18 @@ html{
 
 }
 .contactItemList{
+  padding: 5px 0 5px 0;
   list-style: none;
+  transition: background-color 1 ease-in-out;
+  &:hover{
+    transition: background-color 0.2s ease-in-out;
+    background-color: #E4B1F0;
+  }
 }
 .contactItemList a{
   text-decoration: none;
   color: black;
+
 }
 
 /*sidebar*/
@@ -142,28 +168,46 @@ html{
 
 /*pagina inicio mensajes*/
 
+
 .containerGrid{
   display: grid;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 400px 1fr;
   grid-template-rows: 1fr;
 }
 
 h1{
-  color:#DDEEDF ;
+  color: #433878
 }
 .messageCard{
   width: 200px;
   height: 200px;
-  background-color: #DDEEDF;
+  background-color: #7E60BF;
   align-items: center;
   border-radius: 2px;
+  padding: 10px 5px 10px 5px;
+
+  &>p{
+    color: white;
+  }
 }
 .containerMessages{
+  margin-top: 10px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
   height: 400px;
   overflow-y: scroll;
+}
+
+.mainContent > div{
+  margin: 10px 0 10px 0;
+  max-width: 400px;
+  display: flex;
+  gap: 20px;
+}
+.mainContent > div > input{
+  padding: 5px 2px 5px 2px;
+  outline: none;
 }
 
 /*pagina inicio mensajes*/
@@ -215,7 +259,8 @@ h1{
 [class *= "Chat" ], [class *='once'], [class*= 'Revoked']{ 
   padding: 10px;
   border-radius: 8px;
-  background-color: #f0f0f0;
+  background-color: #7E60BF;
+  color: white;
 }
 [class *= "Image"]{ 
   height: 200px;

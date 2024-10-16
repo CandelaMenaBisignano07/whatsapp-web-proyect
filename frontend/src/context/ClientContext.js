@@ -9,22 +9,18 @@ const ClientProvider = ({ children }) => {
     const clientStorage = localStorage.getItem('client');
     return clientStorage ? JSON.parse(clientStorage) : '';
   });
+  localStorage.setItem('loadingMessage', JSON.stringify(false));
 
-
-  localStorage.setItem('loadingMessage', JSON.stringify(false))
   const socket=io('http://localhost:8080');
   const URL = 'http://localhost:8080/api/';
+
+  const isAuthenticated = ()=> !!client
   
-  const isAuthenticated = () => !!client;
   useEffect(() => {
-    // Guardar el cliente en localStorage cuando cambia
-    if (client) {
-      localStorage.setItem('client', JSON.stringify(client));
-      setClient(JSON.parse(localStorage.getItem('client')))
-    } else {
-      localStorage.removeItem('client'); // Eliminar si client es null
+    if (!client) {
+      localStorage.removeItem('client');
     }
-  }, []);
+  }, [client]);
 
   return (
     <ClientContext.Provider value={{ isAuthenticated, URL, client, setClient, socket, localStorageIsLoading, setLocalStorageIsLoading}}>

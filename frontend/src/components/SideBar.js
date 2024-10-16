@@ -22,9 +22,9 @@ const SideBar = () => {
                     signal:signal
                 })
                 const {payload:payload2} = await contactsFetch.json();
-                const mapedContacts = payload2.map(c => {return {id:c.id, name:c.name}})
-                setContacts([...mapedContacts]);
-                setContactsUptade([...mapedContacts]);
+                const mappedContacts = payload2.map((c)=> {return{id:c.id, name:c.name}})
+                setContacts(mappedContacts);
+                setContactsUptade(mappedContacts);
             } catch (error) {
                 console.log(error.name, error.message)
             }

@@ -23,7 +23,6 @@ const ItemListContainerContacts = () => {
         })
 
         socket.on('revokedMessage', (revoked_message)=>{
-            console.log('aquii')
             if(revoked_message.to == contactId) fetchContact(abortController.signal, contactId, setContact)
         })
 
@@ -32,6 +31,7 @@ const ItemListContainerContacts = () => {
         return()=>{
             socket.off('messageRecieved')
             socket.off('messageSended')
+            socket.off('revokedMessage') //agregamos esto
             abortController.abort()
         };
         

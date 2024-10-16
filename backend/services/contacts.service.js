@@ -2,8 +2,8 @@ import {mediaCharge, __dirname} from "../utils/utils.js";
 import fs from 'fs/promises'
 import { client } from "../configs/client.js"
 const getAllContactsService = async()=>{  ////esto iria en users cuando tenga la autenticacion
-    const contacts = await client.getChats();
-    return contacts;
+    const contacts = await client.getChats()
+    return contacts
 };
 const getOneContactService = async(id)=>{  ////esto iria en users cuando tenga la autenticacion
     await fs.rm(`${__dirname}../../../frontend/public/media`, {recursive:true, force:true})

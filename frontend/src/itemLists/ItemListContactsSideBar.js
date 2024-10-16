@@ -4,7 +4,7 @@ const ItemListContactsSideBar = ({data}) => {
   return (
     <div className="containerContacts">
         {
-            data.map(c=><ItemContact key={c.id.user} name={c.name} contactId={c.id._serialized}/>)
+            data.map(c=><ItemContact key={c.id.user} name={c.name} contactId={c.id._serialized} url/>)
         }
     </div>
   )

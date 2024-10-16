@@ -11,7 +11,8 @@ const QrPage = () => {
     useEffect(() => {
       if(client) navigate('/home')
       socket.on('clientReady', (client) => {
-        setClient(client)
+        localStorage.setItem('client', JSON.stringify(client));
+        setClient(JSON.parse(localStorage.getItem('client')));
         navigate('/home')
       });
       socket.on('qr', (qrImage) => {

@@ -27,7 +27,7 @@ const QrPage = () => {
     }, []);
 
 
-    if(loading) return <Loader/>
+    if(loading) return <Loader body={'waiting for qr'}/>
     if(client) return navigate('/home')
     return (
     <section className='containerFlexQr'>

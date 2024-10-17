@@ -9,6 +9,8 @@ const ClientProvider = ({ children }) => {
     const clientStorage = localStorage.getItem('client');
     return clientStorage ? JSON.parse(clientStorage) : '';
   });
+
+  const[error, setError] = useState({})
   localStorage.setItem('loadingMessage', JSON.stringify(false));
 
   const socket=io('http://localhost:8080');
@@ -23,7 +25,7 @@ const ClientProvider = ({ children }) => {
   }, [client]);
 
   return (
-    <ClientContext.Provider value={{ isAuthenticated, URL, client, setClient, socket, localStorageIsLoading, setLocalStorageIsLoading}}>
+    <ClientContext.Provider value={{error, setError, isAuthenticated, URL, client, setClient, socket, localStorageIsLoading, setLocalStorageIsLoading}}>
       {children}
     </ClientContext.Provider>
   );

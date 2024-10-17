@@ -56,12 +56,14 @@ button{
   animation: spin89345 1s linear infinite;
 }
 .mainContent > .loaderContainer{
-  height: 70%;
+  max-height: 70%;
+  margin: auto;
 }
 .loaderContainer{
   height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content:center ;
   align-items: center;
 } 
 

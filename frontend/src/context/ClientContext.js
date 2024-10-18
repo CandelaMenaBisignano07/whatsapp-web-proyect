@@ -17,12 +17,7 @@ const ClientProvider = ({ children }) => {
   const URL = 'http://localhost:8080/api/';
 
   const isAuthenticated = ()=> !!client
-  
-  useEffect(() => {
-    if (!client) {
-      localStorage.removeItem('client');
-    }
-  }, [client]);
+
 
   return (
     <ClientContext.Provider value={{error, setError, isAuthenticated, URL, client, setClient, socket, localStorageIsLoading, setLocalStorageIsLoading}}>

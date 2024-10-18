@@ -1,17 +1,41 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
-import ItemContact from './LinkToContact'
-import { Link } from 'react-router-dom'
 import ItemListContactsSideBar from '../itemLists/ItemListContactsSideBar'
 import { ClientContext } from '../context/ClientContext'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from './Button'
 const SideBar = () => {
     const [contacts, setContacts] = useState([])
     const [contactsUptade, setContactsUptade] = useState([])
     const [input, setInput] = useState('')
-    const {socket} = useContext(ClientContext)
-    const URL = 'http://localhost:8080/api/'
+    const {socket, setError} = useContext(ClientContext)
+    const URL = 'http://localhost:8080/api/';
+    const navigate = useNavigate();
+    const destroyClient = async()=>{
+        try {
+            const clientDestroy = await fetch(`${URL}contacts`, {
+                method:'delete',
+                headers:{
+                    'Content-type': 'application/json'
+                }
+            })
+
+            if(clientDestroy.status != 200){
+                const {error: errorMessage} = await clientDestroy.json();
+                setError({code: clientDestroy.status, message: errorMessage})
+                return navigate(`/error/${clientDestroy.status}`)
+            }
+
+            return navigate('/loggedOut')
+        } catch (error) {
+            if(error.message === 'signal is aborted without reason'){
+                return
+            }  
+            else console.log(error.message)
+        }
+    }
     useEffect(()=>{
         const abortController = new AbortController()
-        const signal = abortController.signal
+        const signal = abortController.signal;
         const fetchContacts = async()=>{
             try {
                 const contactsFetch = await fetch(`${URL}contacts`, {
@@ -21,22 +45,32 @@ const SideBar = () => {
                     },
                     signal:signal
                 })
+
+                if(contactsFetch.status != 200){
+                    const {error: errorMessage} = await contactsFetch.json();
+                    setError({code: contactsFetch.status, message: errorMessage})
+                    return navigate(`/error/${contactsFetch.status}`)
+                }
                 const {payload:payload2} = await contactsFetch.json();
                 const mappedContacts = payload2.map((c)=> {return{id:c.id, name:c.name}})
                 setContacts(mappedContacts);
                 setContactsUptade(mappedContacts);
             } catch (error) {
-                console.log(error.name, error.message)
+                if(error.message === 'signal is aborted without reason'){
+                    return
+                }  
+                else console.log(error.message)
             }
         };
 
-        socket.on('messageRecieved', (client_message)=>{
+        socket.on('messageRecieved', ()=>{
             fetchContacts()
         })
 
-        socket.on('messageSended', (client_message)=>{
+        socket.on('messageSended', ()=>{
             fetchContacts()
         })
+
         fetchContacts()
         return ()=>{
             socket.off('messageRecieved')
@@ -63,7 +97,10 @@ const SideBar = () => {
     <>
         <header className="sideBar">
             <nav>
-                <Link to='/home' className='homeAnchor'>inicio</Link>
+                <div>
+                    <Link to='/home' className='homeAnchor'>inicio</Link>
+                    <Button body={'log out'} callback={destroyClient}/>
+                </div>
                 <div className="inputContainer">
                     <input value={input} type="search" placeholder="buscar" onChange={(e)=>searchContacts(e.currentTarget.value)}/>
                 </div>

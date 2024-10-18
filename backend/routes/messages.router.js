@@ -7,5 +7,5 @@ const router = Router()
 router.get('/',handleClient, getAllMessages);
 router.post('/',handleClient, sendPersonalMessages);
 router.put('/:id',handleClient, uptadeMessage);
-router.delete('/:id', deleteMessage);
+router.delete('/:id', handleClient, deleteMessage);
 export default router

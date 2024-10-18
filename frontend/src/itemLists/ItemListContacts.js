@@ -1,7 +1,8 @@
 import { useContext} from 'react'
-import Button from '../components/Button'
+import Button from "../components/Button"
 import ItemMessagesContact from '../Items/ItemMessagesContact'
-import { ClientContext } from '../context/ClientContext';
+import { ClientContext } from '../context/ClientContext'
+import { redirect, useNavigate } from 'react-router-dom';
 const ItemListContacts = ({data}) => {
     const dateDifference = (message)=>{
         const TIME_LIMIT_MS = (23 * 60 * 60 + 58 * 60 + 0) * 1000;
@@ -11,7 +12,8 @@ const ItemListContacts = ({data}) => {
         const timeDifference = now - messageTimestampMs;
         return timeDifference <= TIME_LIMIT_MS ? true : false
     }
-    const {URL} = useContext(ClientContext);
+    const {URL, setError} = useContext(ClientContext);
+    const navigate = useNavigate()
     const eliminateMessage = async(id)=>{
         try {
             const hola = await fetch(`${URL}messages/${id}`,{
@@ -21,10 +23,16 @@ const ItemListContacts = ({data}) => {
                 }
             })
 
-            const json = await hola.json()
-            console.log(json)
+            if(hola.status != 200){
+                const {error: errorMessage} = await hola.json()
+                setError({code:hola.status, message: errorMessage})
+                return navigate(`/error/${hola.status}`)
+            }
         } catch (error) {
-            console.log(error.message)
+            if(error.message === 'signal is aborted without reason'){
+                return
+            }  
+            else console.log(error.message)
         }
     }
     return (

@@ -9,7 +9,8 @@ export const client = new Client({
     authStrategy: new LocalAuth({
         dataPath: './authFolder',
         clientId: 'client-one',
-    })
+    }),
+
 });
 
 client.on('ready', () => {
@@ -41,5 +42,10 @@ client.on('message_create', (client_message)=>{
 
 client.on('message_revoke_everyone', (afterMessage, revokedMessage)=>{
     socketServer.emit('revokedMessage', revokedMessage)
+})
+
+client.on('disconnected', (reason)=>{
+    console.log('me desconecte por:', reason)
+    socketServer.emit('disconnected', reason)
 })
 //cuando el cliente active el modo "chatbot" se habilitara este evento

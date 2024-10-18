@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 const ItemMessagesContact = ({message}) => {
-      let condition = message.id.fromMe ? `message${message.type[0].toUpperCase()}${message.type.slice(1, message.length)}FromMe` : `message${message.type[0].toUpperCase()}${message.type.slice(1, message.length)}FromOthers`
+      const condition = message.id.fromMe ? `message${message.type[0].toUpperCase()}${message.type.slice(1, message.length)}FromMe` : `message${message.type[0].toUpperCase()}${message.type.slice(1, message.length)}FromOthers`
+      const TEMPORAL_MEDIA_CLASS = `once${condition.slice(12, condition.length)}`
       switch(message.type){
         case 'chat': 
           if(message.isGroup) return (<p className={condition}><strong>{message.author}</strong><br/>{message.body}</p>)
@@ -10,10 +11,10 @@ const ItemMessagesContact = ({message}) => {
           if(message.hasMedia) return(
               <img className={condition} src={`${message.pathToMedia}`}/>
           )
-          else return <p className={`once${condition.slice(12, condition.length)}`}>imagen para ver una vez</p>
+          else return <p className={TEMPORAL_MEDIA_CLASS}>imagen para ver una vez</p>
         case 'video':
           if(message.hasMedia) return(<video className={condition} controls src={`${message.pathToMedia}`}/>)
-          else return <p className={`once${condition.slice(12, condition.length)}`}>video para ver una vez</p>
+          else return <p className={TEMPORAL_MEDIA_CLASS}>video para ver una vez</p>
         case 'audio':
           return(
             <audio className={condition} controls src={`${message.pathToMedia}`}/>

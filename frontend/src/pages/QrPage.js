@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom';
 const QrPage = () => {
     const [loading, setLoading] = useState(true)
     const [qr, setQr] = useState('')
-    const { setClient, socket, client} = useContext(ClientContext)
+    const { setClient, socket} = useContext(ClientContext)
     const navigate = useNavigate('/home')
 
     useEffect(() => {
-      if(client) navigate('/home')
       socket.on('clientReady', (client) => {
         localStorage.setItem('client', JSON.stringify(client));
         setClient(JSON.parse(localStorage.getItem('client')));
@@ -28,7 +27,6 @@ const QrPage = () => {
 
 
     if(loading) return <Loader body={'waiting for qr'}/>
-    if(client) return navigate('/home')
     return (
     <section className='containerFlexQr'>
       <div className='containerContentQr'>

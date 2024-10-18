@@ -118,7 +118,21 @@ button{
   height: 550px;
 }
 
+.sideBar nav div:first-of-type{
+  display: flex;
+  align-items: center;
+  gap: 150px;
 
+}
+
+.sideBar nav div:first-of-type button{
+  display: inline-block;
+  padding-left: 40px;
+  background-image: url('./assets/log-out.png');
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: left center; 
+}
 
 .homeAnchor{
   font-size: 20px;

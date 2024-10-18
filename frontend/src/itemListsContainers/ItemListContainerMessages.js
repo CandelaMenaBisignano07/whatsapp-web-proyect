@@ -1,14 +1,15 @@
 import { useEffect, useState, useContext} from "react"
-import SideBar from "../components/SideBar"
+import SideBar from '../components/SideBar'
 import { ClientContext } from "../context/ClientContext"
 import InputMessages from "../components/InputMessages"
-import Button from "../components/Button"
+import Button from '../components/Button'
 import ItemListMessages from "../itemLists/ItemListMessages"
+import { redirect } from "react-router-dom"
 const MessagesPage = () => {
     const [data, setData] = useState([])
     const [inputData, setInputData] = useState({})
     const [isLoading, setIsLoading] = useState(true) // estado loader fetch general
-    const {URL, client, localStorageIsLoading, setLocalStorageIsLoading} = useContext(ClientContext) // estado loader de mensajes con delay
+    const {URL, client, localStorageIsLoading, setLocalStorageIsLoading, setError} = useContext(ClientContext) // estado loader de mensajes con delay
     const inputChange = (name, data)=>{
         const newOne = structuredClone(inputData)
         newOne[name] = data;
@@ -22,10 +23,14 @@ const MessagesPage = () => {
                     'Content-Type': "application/json"
                 }
             });
+
             const {payload} = await messages.json();
             setData(payload.filter(m => m.from === client.me._serialized))
         } catch (error) {
-            console.log(error.message)
+            if(error.message === 'signal is aborted without reason'){
+                return
+            }  
+            else console.log(error.message)
         }
     }
     useEffect(()=>{
@@ -60,7 +65,7 @@ const MessagesPage = () => {
                     localStorage.setItem('loadingMessage',  JSON.stringify(false))
                     setLocalStorageIsLoading(JSON.parse(localStorage.getItem('loadingMessage')))
                 }catch(error){
-                    console.log(error.message)
+                    setError({code: error.response.status, message: error.message})
                 }
             }, (inputData.seconds)*1000)
 

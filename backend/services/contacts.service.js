@@ -11,10 +11,9 @@ const getOneContactService = async(id)=>{  ////esto iria en users cuando tenga l
     const contact = await client.getChatById(id)
     const contactNew = {isGroup: contact.isGroup, id: contact.id, name:contact.name}
     const messages = await contact.fetchMessages({limit:5})
-    for(let message of messages){ //recorre los msjs obtenidos
+    for(let message of messages){ 
         const contactProfile = await message.getContact()
         message.profilePicture =  await getProfilePictureService(contactProfile.id._serialized)
-        message.name = contactProfile.name ? contactProfile.name : contactProfile.id.user
         if(message.hasMedia){ //si el msj tiene media
             message.pathToMedia = await mediaCharge(message)
         }
@@ -30,8 +29,13 @@ const getProfilePictureService = async(id)=>{
     return profilePicture
 };
 
+const destroyClientService = async()=>{
+    await client.destroy();
+}
+
 export{
     getProfilePictureService,
     getOneContactService,
-    getAllContactsService
+    getAllContactsService,
+    destroyClientService
 }

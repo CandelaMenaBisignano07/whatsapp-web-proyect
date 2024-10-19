@@ -4,7 +4,6 @@ import { ClientContext } from "../context/ClientContext"
 import InputMessages from "../components/InputMessages"
 import Button from '../components/Button'
 import ItemListMessages from "../itemLists/ItemListMessages"
-import { redirect } from "react-router-dom"
 const MessagesPage = () => {
     const [data, setData] = useState([])
     const [inputData, setInputData] = useState({})
@@ -34,7 +33,6 @@ const MessagesPage = () => {
         }
     }
     useEffect(()=>{
-        console.log(isLoading)
         console.log(localStorageIsLoading, 'desde el useeffect')
         if(!localStorageIsLoading){
             fetchMessages()

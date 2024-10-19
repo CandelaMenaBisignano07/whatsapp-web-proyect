@@ -24,7 +24,7 @@ const SideBar = () => {
                 setError({code: clientDestroy.status, message: errorMessage})
                 return navigate(`/error/${clientDestroy.status}`)
             }
-
+            localStorage.setItem('client', "")
             return navigate('/loggedOut')
         } catch (error) {
             if(error.message === 'signal is aborted without reason'){
@@ -37,6 +37,7 @@ const SideBar = () => {
         const abortController = new AbortController()
         const signal = abortController.signal;
         const fetchContacts = async()=>{
+            console.log('jaa')
             try {
                 const contactsFetch = await fetch(`${URL}contacts`, {
                     method:'GET',
@@ -45,16 +46,18 @@ const SideBar = () => {
                     },
                     signal:signal
                 })
-
+                console.log(contactsFetch.status)
                 if(contactsFetch.status != 200){
                     const {error: errorMessage} = await contactsFetch.json();
                     setError({code: contactsFetch.status, message: errorMessage})
                     return navigate(`/error/${contactsFetch.status}`)
                 }
                 const {payload:payload2} = await contactsFetch.json();
+                console.log(payload2, 'hola')
                 const mappedContacts = payload2.map((c)=> {return{id:c.id, name:c.name}})
                 setContacts(mappedContacts);
                 setContactsUptade(mappedContacts);
+                console.log('setted')
             } catch (error) {
                 if(error.message === 'signal is aborted without reason'){
                     return
@@ -62,19 +65,17 @@ const SideBar = () => {
                 else console.log(error.message)
             }
         };
-
-        socket.on('messageRecieved', ()=>{
-            fetchContacts()
-        })
-
-        socket.on('messageSended', ()=>{
-            fetchContacts()
-        })
-
         fetchContacts()
+        const recievedEvent = socket.on('messageRecieved', ()=>{
+            fetchContacts()
+        })
+
+        const sendedEvent = socket.on('messageSended', ()=>{
+            fetchContacts()
+        })
         return ()=>{
-            socket.off('messageRecieved')
-            socket.off('messageSended')
+            socket.off('messageRecieved', recievedEvent)
+            socket.off('messageSended', sendedEvent)
             abortController.abort()
         }
     }, [])

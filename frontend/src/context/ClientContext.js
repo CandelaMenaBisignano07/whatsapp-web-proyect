@@ -18,6 +18,17 @@ const ClientProvider = ({ children }) => {
 
   const isAuthenticated = ()=> !!client
 
+  useEffect(()=>{
+    const myListener = window.addEventListener('storage', (e)=>{
+      if(e.key === "client"){
+        setClient(e.newValue)
+      }
+    })
+
+    return ()=>{
+      window.removeEventListener('storage', myListener);
+    }
+  }, [])
 
   return (
     <ClientContext.Provider value={{error, setError, isAuthenticated, URL, client, setClient, socket, localStorageIsLoading, setLocalStorageIsLoading}}>

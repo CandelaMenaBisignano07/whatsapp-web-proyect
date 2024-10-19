@@ -15,7 +15,7 @@ function App() {
         <ClientProvider>
           <BrowserRouter basename="/">
             <Routes>
-              <Route path="/" element={<QrPage/>}/>
+              <Route path={"/"} element={<QrPage/>}/>
               <Route path={"/:contactId"} element={<ItemListContainerContacts/>}/>
               <Route path={"/home"} element={<MessagesPage/>} />
               <Route path={"/error/:code"} element={<Error/>}/>

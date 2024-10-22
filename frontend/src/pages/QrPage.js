@@ -7,11 +7,11 @@ const QrPage = () => {
     const [qr, setQr] = useState('')
     const {socket, client} = useContext(ClientContext)
     const navigate = useNavigate()
-
     useEffect(() => {
+      if(client) return navigate('/home')
       socket.on('clientReady', (client_info) => {
         localStorage.setItem('client', JSON.stringify(client_info));
-          return navigate('/home')
+        return navigate('/home')
       });
       socket.on('qr', (qrImage) => {
         setQr(qrImage)
@@ -22,10 +22,6 @@ const QrPage = () => {
         socket.off('clientReady')
       };
     }, [navigate]);
-
-    useEffect(()=>{
-      if(client) return navigate('/home')
-    }, [client, navigate])
 
     if(loading) return <Loader body={'waiting for qr'}/>
     return (

@@ -4,7 +4,7 @@ import Loader from '../components/Loader'
 import { useParams } from 'react-router-dom'
 import ItemListContacts from '../itemLists/ItemListContacts'
 import SideBar from '../components/SideBar'
-import { fetchContact } from '../api/contactsApi'
+import { api } from '../lib/api/api'
 const ItemListContainerContacts = () => {
     const {contactId} = useParams()
     const [contact, setContact] = useState(null)
@@ -15,18 +15,18 @@ const ItemListContainerContacts = () => {
         const signal = abortController.signal
         
         socket.on('messageRecieved', (client_message)=>{
-            if(client_message.from === contactId) fetchContact(signal, contactId, setContact)
+            if(client_message.from === contactId) api.contacts.fetchContact(signal, contactId, setContact)
         })
 
         socket.on('messageSended', (client_message)=>{
-            if(client_message.to === contactId) fetchContact(signal, contactId, setContact)
+            if(client_message.to === contactId) api.contacts.fetchContact(signal, contactId, setContact)
         })
 
         socket.on('revokedMessage', (revoked_message)=>{
-            if(revoked_message.to == contactId) fetchContact(abortController.signal, contactId, setContact)
+            if(revoked_message.to === contactId) api.contacts.fetchContact(abortController.signal, contactId, setContact)
         })
 
-        fetchContact(signal, contactId, setContact)
+        api.contacts.fetchContact(signal, contactId, setContact)
         setLoader(false)
         return()=>{
             socket.off('messageRecieved')
@@ -36,7 +36,7 @@ const ItemListContainerContacts = () => {
         };
         
     }, [contactId])
-    if(!contact) return <Loader/>  // falta el loader con el estado
+    if(!contact) return <Loader body={'awaiting contact...'}/>  // falta el loader con el estado
   return (
     <div className='containerGrid'>
         <SideBar/>

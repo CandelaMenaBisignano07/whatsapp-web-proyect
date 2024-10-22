@@ -14,7 +14,6 @@ const ClientProvider = ({ children }) => {
   localStorage.setItem('loadingMessage', JSON.stringify(false));
 
   const socket=io('http://localhost:8080');
-  const URL = 'http://localhost:8080/api/';
 
   const isAuthenticated = ()=> !!client
 
@@ -22,14 +21,13 @@ const ClientProvider = ({ children }) => {
     const myListener = window.addEventListener('storage', (e)=>{
       if(e.key === "client"){
         setClient(e.newValue)
-      }
+      };
     })
 
     return ()=>{
       window.removeEventListener('storage', myListener);
     }
   }, [])
-
   return (
     <ClientContext.Provider value={{error, setError, isAuthenticated, URL, client, setClient, socket, localStorageIsLoading, setLocalStorageIsLoading}}>
       {children}

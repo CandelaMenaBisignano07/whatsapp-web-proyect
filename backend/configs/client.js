@@ -1,5 +1,5 @@
 import { socketServer } from "../app.js";
-import { __dirname, qrCharge} from "../utils/utils.js";
+import {qrCharge} from "../utils/utils.js";
 import pkg from 'whatsapp-web.js'
 const { Client, LocalAuth} = pkg;
 
@@ -15,7 +15,7 @@ export const client = new Client({
 
 client.on('ready', () => {
     console.log('Client is ready!');
-    socketServer.emit('clientReady', client.info)
+    socketServer.emit('clientReady', client.info);
 });
 client.on('auth_failure', ()=>{
     client.emit('authFailure')
@@ -44,8 +44,6 @@ client.on('message_revoke_everyone', (afterMessage, revokedMessage)=>{
     socketServer.emit('revokedMessage', revokedMessage)
 })
 
-client.on('disconnected', (reason)=>{
-    console.log('me desconecte por:', reason)
-    socketServer.emit('disconnected', reason)
-})
+
+
 //cuando el cliente active el modo "chatbot" se habilitara este evento

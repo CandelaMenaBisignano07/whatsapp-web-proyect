@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Button = ({body,callback, ...props}) => {
+const Button = ({body,callback, params, ...props}) => {
   return (
     <>
-        <button onClick={()=> callback(props.id ? props.id : null)} {...props}>{body}</button>
+        <button onClick={()=> callback(...params)} {...props}>{body}</button>
     </>
   )
 }
